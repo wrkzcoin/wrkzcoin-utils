@@ -708,7 +708,9 @@ export class CryptoNote implements ICryptoNote {
             tx.outputs.push(new TransactionOutputs.KeyOutput(output.amount, output.key));
         }
 
-        await tx.generateTxProofOfWork(diff);
+        if (feeAmount < Config.FeeNoTxPoW) {
+            await tx.generateTxProofOfWork(diff);
+        }
 
         if (tx.extra.length > (this.m_config.maximumExtraSize || Config.maximumExtraSize)) {
             throw new Error('Transaction extra exceeds the limit of [' +

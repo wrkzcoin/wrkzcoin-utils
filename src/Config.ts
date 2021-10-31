@@ -17,6 +17,7 @@ export interface ICoinConfig {
     maximumExtraSize?: number;
     activateFeePerByteTransactions?: boolean;
     feePerByte?: number;
+    FeeNoTxPoW?: number;
     feePerByteChunkSize?: number;
     TransactionPowDifficulty?: number;
     FusionTransactionPowDifficulty?: number;
@@ -43,6 +44,7 @@ export interface ICoinRunningConfig extends ICoinConfig {
     maximumExtraSize: number;
     activateFeePerByteTransactions: boolean;
     feePerByte: number;
+    FeeNoTxPoW: number;
     feePerByteChunkSize: number;
     TransactionPowDifficulty: number;
     FusionTransactionPowDifficulty: number;
@@ -73,6 +75,7 @@ export const Config: ICoinRunningConfig = {
     maximumExtraSize: 1024,
     activateFeePerByteTransactions: true,
     feePerByte: 1.953125,
+    FeeNoTxPoW: 10000,
     feePerByteChunkSize: 256,
     TransactionPowDifficulty: 20000,
     FusionTransactionPowDifficulty: 60000,
