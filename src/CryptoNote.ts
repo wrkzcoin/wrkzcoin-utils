@@ -1,4 +1,5 @@
 // Copyright (c) 2018-2020, The TurtleCoin Developers
+// Copyright (c) 2026, The WrkzCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -11,7 +12,7 @@ import {
     ED25519,
     TransactionInputs,
     TransactionOutputs,
-    TurtleCoinCrypto,
+    WrkzCoinCrypto,
     Interfaces,
     CryptoNoteInterfaces,
     ICryptoConfig
@@ -44,7 +45,7 @@ export class CryptoNote implements ICryptoNote {
         }
 
         if (cryptoConfig) {
-            TurtleCoinCrypto.userCryptoFunctions = cryptoConfig;
+            WrkzCoinCrypto.userCryptoFunctions = cryptoConfig;
         }
     }
 
@@ -84,11 +85,11 @@ export class CryptoNote implements ICryptoNote {
      * The current cryptographic primitives configuration
      */
     public get cryptoConfig (): ICryptoConfig {
-        return TurtleCoinCrypto.userCryptoFunctions;
+        return WrkzCoinCrypto.userCryptoFunctions;
     }
 
     public set cryptoConfig (config: ICryptoConfig) {
-        TurtleCoinCrypto.userCryptoFunctions = config;
+        WrkzCoinCrypto.userCryptoFunctions = config;
     }
 
     /**
@@ -130,7 +131,7 @@ export class CryptoNote implements ICryptoNote {
         transactionPublicKey: string,
         privateViewKey: string
     ): Promise<string> {
-        return TurtleCoinCrypto.generateKeyDerivation(
+        return WrkzCoinCrypto.generateKeyDerivation(
             transactionPublicKey, privateViewKey);
     }
 
@@ -151,7 +152,7 @@ export class CryptoNote implements ICryptoNote {
         privateSpendKey: string,
         outputIndex: number
     ): Promise<CryptoNoteInterfaces.IKeyImage> {
-        const derivation = await TurtleCoinCrypto.generateKeyDerivation(transactionPublicKey, privateViewKey);
+        const derivation = await WrkzCoinCrypto.generateKeyDerivation(transactionPublicKey, privateViewKey);
 
         return this.generateKeyImagePrimitive(publicSpendKey, privateSpendKey, outputIndex, derivation);
     }
@@ -171,11 +172,11 @@ export class CryptoNote implements ICryptoNote {
         outputIndex: number,
         derivation: string
     ): Promise<CryptoNoteInterfaces.IKeyImage> {
-        const publicEphemeral = await TurtleCoinCrypto.derivePublicKey(derivation, outputIndex, publicSpendKey);
+        const publicEphemeral = await WrkzCoinCrypto.derivePublicKey(derivation, outputIndex, publicSpendKey);
 
-        const privateEphemeral = await TurtleCoinCrypto.deriveSecretKey(derivation, outputIndex, privateSpendKey);
+        const privateEphemeral = await WrkzCoinCrypto.deriveSecretKey(derivation, outputIndex, privateSpendKey);
 
-        const keyImage = await TurtleCoinCrypto.generateKeyImage(publicEphemeral, privateEphemeral);
+        const keyImage = await WrkzCoinCrypto.generateKeyImage(publicEphemeral, privateEphemeral);
 
         return {
             publicEphemeral: publicEphemeral,
@@ -191,7 +192,7 @@ export class CryptoNote implements ICryptoNote {
      * @returns the public key
      */
     public async privateKeyToPublicKey (privateKey: string): Promise<string> {
-        return TurtleCoinCrypto.secretKeyToPublicKey(privateKey);
+        return WrkzCoinCrypto.secretKeyToPublicKey(privateKey);
     }
 
     /**
@@ -262,9 +263,9 @@ export class CryptoNote implements ICryptoNote {
         generatePartial?: boolean
     ): Promise<Interfaces.Output> {
         try {
-            const derivedKey = await TurtleCoinCrypto.generateKeyDerivation(transactionPublicKey, privateViewKey);
+            const derivedKey = await WrkzCoinCrypto.generateKeyDerivation(transactionPublicKey, privateViewKey);
 
-            const publicEphemeral = await TurtleCoinCrypto.derivePublicKey(derivedKey, output.index, publicSpendKey);
+            const publicEphemeral = await WrkzCoinCrypto.derivePublicKey(derivedKey, output.index, publicSpendKey);
 
             if (publicEphemeral === output.key) {
                 output.input = {
@@ -283,16 +284,16 @@ export class CryptoNote implements ICryptoNote {
                      */
                     const privateEphemeral = (generatePartial)
                         ? privateSpendKey
-                        : await TurtleCoinCrypto.deriveSecretKey(
+                        : await WrkzCoinCrypto.deriveSecretKey(
                             derivedKey, output.index, privateSpendKey);
 
-                    const derivedPublicEphemeral = await TurtleCoinCrypto.secretKeyToPublicKey(privateEphemeral);
+                    const derivedPublicEphemeral = await WrkzCoinCrypto.secretKeyToPublicKey(privateEphemeral);
 
                     if (derivedPublicEphemeral !== publicEphemeral && !generatePartial) {
                         throw new Error('Incorrect private spend key supplied');
                     }
 
-                    const keyImage = await TurtleCoinCrypto.generateKeyImage(publicEphemeral, privateEphemeral);
+                    const keyImage = await WrkzCoinCrypto.generateKeyImage(publicEphemeral, privateEphemeral);
 
                     output.input.privateEphemeral = privateEphemeral;
 
@@ -434,13 +435,13 @@ export class CryptoNote implements ICryptoNote {
             message = JSON.stringify(message);
         }
 
-        const publicKey = await TurtleCoinCrypto.secretKeyToPublicKey(privateKey);
+        const publicKey = await WrkzCoinCrypto.secretKeyToPublicKey(privateKey);
 
         const hex = Buffer.from(message);
 
-        const hash = await TurtleCoinCrypto.cn_fast_hash(hex.toString('hex'));
+        const hash = await WrkzCoinCrypto.cn_fast_hash(hex.toString('hex'));
 
-        return TurtleCoinCrypto.generateSignature(hash, publicKey, privateKey);
+        return WrkzCoinCrypto.generateSignature(hash, publicKey, privateKey);
     }
 
     /**
@@ -458,14 +459,14 @@ export class CryptoNote implements ICryptoNote {
 
         const hex = Buffer.from(message);
 
-        const hash = await TurtleCoinCrypto.cn_fast_hash(hex.toString('hex'));
+        const hash = await WrkzCoinCrypto.cn_fast_hash(hex.toString('hex'));
 
-        return TurtleCoinCrypto.checkSignature(hash, publicKey, signature);
+        return WrkzCoinCrypto.checkSignature(hash, publicKey, signature);
     }
 
     /**
      * Constructs a new Transaction using the supplied values.
-     * The resulting transaction can be broadcasted to the TurtleCoin network
+     * The resulting transaction can be broadcasted to the WrkzCoin network
      * @async
      * @param outputs the new outputs for the transaction (TO)
      * @param inputs outputs we will be spending (FROM)
@@ -725,7 +726,7 @@ export class CryptoNote implements ICryptoNote {
 
     /**
      * Constructs a new Transaction using the supplied values.
-     * The resulting transaction can be broadcasted to the TurtleCoin network
+     * The resulting transaction can be broadcasted to the WrkzCoin network
      * @async
      * @param outputs the new outputs for the transaction (TO)
      * @param inputs outputs we will be spending (FROM)
@@ -910,7 +911,7 @@ async function checkRingSignatures (
     publicKeys: string[],
     signatures: string[]
 ): Promise<boolean> {
-    return TurtleCoinCrypto.checkRingSignatures(hash, keyImage, publicKeys, signatures);
+    return WrkzCoinCrypto.checkRingSignatures(hash, keyImage, publicKeys, signatures);
 }
 
 /** @ignore */
@@ -922,7 +923,7 @@ async function generateRingSignatures (
     realOutputIndex: number,
     index: number
 ): Promise<Interfaces.GeneratedRingSignatures> {
-    const signatures = await TurtleCoinCrypto.generateRingSignatures(
+    const signatures = await WrkzCoinCrypto.generateRingSignatures(
         hash,
         keyImage,
         publicKeys,
@@ -950,7 +951,7 @@ async function prepareRingSignatures (
     tx_public_key: string,
     randomKey?: string
 ): Promise<Interfaces.PreparedRingSignature> {
-    const prepped = await TurtleCoinCrypto.prepareRingSignatures(
+    const prepped = await WrkzCoinCrypto.prepareRingSignatures(
         hash, keyImage, publicKeys, realOutputIndex, randomKey);
 
     return {
@@ -977,9 +978,9 @@ async function completeRingSignatures (
     sigs: string[],
     index: number
 ): Promise<Interfaces.GeneratedRingSignatures> {
-    const privateEphemeral = await TurtleCoinCrypto.deriveSecretKey(derivation, outputIndex, privateSpendKey);
+    const privateEphemeral = await WrkzCoinCrypto.deriveSecretKey(derivation, outputIndex, privateSpendKey);
 
-    const signatures = await TurtleCoinCrypto.completeRingSignatures(privateEphemeral, realOutputIndex, key, sigs);
+    const signatures = await WrkzCoinCrypto.completeRingSignatures(privateEphemeral, realOutputIndex, key, sigs);
 
     return { signatures, index };
 }
@@ -1080,9 +1081,9 @@ async function prepareTransactionOutputs (outputs: Interfaces.GeneratedOutput[])
         amount: number,
         index: number,
         privateKey: string): Promise<Interfaces.PreparedOutput> {
-        const outDerivation = await TurtleCoinCrypto.generateKeyDerivation(destination.view.publicKey, privateKey);
+        const outDerivation = await WrkzCoinCrypto.generateKeyDerivation(destination.view.publicKey, privateKey);
 
-        const outPublicEphemeral = await TurtleCoinCrypto.derivePublicKey(
+        const outPublicEphemeral = await WrkzCoinCrypto.derivePublicKey(
             outDerivation,
             index,
             destination.spend.publicKey);
@@ -1093,7 +1094,7 @@ async function prepareTransactionOutputs (outputs: Interfaces.GeneratedOutput[])
         };
     }
 
-    const keys = await TurtleCoinCrypto.generateKeys();
+    const keys = await WrkzCoinCrypto.generateKeys();
 
     const transactionKeys: ED25519.KeyPair = await ED25519.KeyPair.from(keys.public_key, keys.private_key);
 
@@ -1130,3 +1131,4 @@ function getInputKeys (preparedSignatures: Interfaces.PreparedRingSignature[], i
 
     throw new Error('Could not locate input keys in the prepared signatures');
 }
+

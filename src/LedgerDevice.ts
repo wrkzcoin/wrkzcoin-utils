@@ -1,4 +1,5 @@
 // Copyright (c) 2020, The TurtleCoin Developers
+// Copyright (c) 2026, The WrkzCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -19,7 +20,7 @@ const IDENT = '547572746c65436f696e206973206e6f742061204d6f6e65726f20666f726b21'
 
 /**
  * An easy to use interface that uses a Ledger HW transport to communicate with
- * the TurtleCoin application running on a ledger device.
+ * the WrkzCoin application running on a ledger device.
  * Please see. See https://github.com/LedgerHQ/ledgerjs for available transport providers
  */
 export class LedgerDevice extends EventEmitter {
@@ -103,7 +104,7 @@ export class LedgerDevice extends EventEmitter {
 
     /**
      * Checks to make sure that the application running on the ledger
-     * at least claims to be the TurtleCoin ledger application
+     * at least claims to be the WrkzCoin ledger application
      */
     public async checkIdent (): Promise<boolean> {
         const ident = await this.getIdent();
@@ -1019,3 +1020,4 @@ function isHex64 (value: string): boolean {
 function isHex128 (value: string): boolean {
     return (isHex(value) && value.length === 128);
 }
+

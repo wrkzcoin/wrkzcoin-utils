@@ -1,4 +1,5 @@
 // Copyright (c) 2018-2020, The TurtleCoin Developers
+// Copyright (c) 2026, The WrkzCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -1561,3 +1562,4 @@ export function ip2int (ip: string): number {
 
     return tmp.reduce((ipInt, octet) => (ipInt << 8) + parseInt(octet, 10), 0) >>> 0;
 }
+

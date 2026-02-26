@@ -1,13 +1,14 @@
 // Copyright (c) 2020, The TurtleCoin Developers
+// Copyright (c) 2026, The WrkzCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
 import { Address } from './Address';
 import { AddressPrefix } from './AddressPrefix';
-import { ED25519, Interfaces as TransactionInterfaces, MultisigInterfaces, TurtleCoinCrypto } from './Types';
+import { ED25519, Interfaces as TransactionInterfaces, MultisigInterfaces, WrkzCoinCrypto } from './Types';
 import { Counter, ModeOfOperation, utils as AESUtils } from 'aes-js';
 import { Reader, Writer } from 'bytestream-helper';
-import { Base58 } from 'turtlecoin-base58';
+import { Base58 } from 'WrkzCoin-base58';
 
 /** @ignore */
 const messagePrefix = 0xde0aec198;
@@ -121,7 +122,7 @@ export class MultisigMessage {
 
         const rawData = decoded.slice(0, decoded.length - 128);
 
-        const hash = await TurtleCoinCrypto.cn_fast_hash(rawData);
+        const hash = await WrkzCoinCrypto.cn_fast_hash(rawData);
 
         const reader = new Reader(rawData);
 
@@ -139,7 +140,7 @@ export class MultisigMessage {
 
         const source = await Address.fromAddress(transfer.address);
 
-        if (!await TurtleCoinCrypto.checkSignature(hash, source.spend.publicKey, signature)) {
+        if (!await WrkzCoinCrypto.checkSignature(hash, source.spend.publicKey, signature)) {
             throw new Error('Invalid data signature');
         }
 
@@ -288,9 +289,9 @@ export class MultisigMessage {
 
         writer.write(subWriter.buffer);
 
-        const hash = await TurtleCoinCrypto.cn_fast_hash(writer.blob);
+        const hash = await WrkzCoinCrypto.cn_fast_hash(writer.blob);
 
-        const sig = await TurtleCoinCrypto.generateSignature(
+        const sig = await WrkzCoinCrypto.generateSignature(
             hash, this.source.spend.publicKey, this.source.spend.privateKey);
 
         writer.hex(sig);
@@ -309,7 +310,7 @@ async function encrypt (
     const transfer = Buffer.from(JSON.stringify(payload));
 
     const aesKey = Buffer.from(
-        await TurtleCoinCrypto.generateKeyDerivation(
+        await WrkzCoinCrypto.generateKeyDerivation(
             destination.spend.publicKey, source.spend.privateKey), 'hex');
 
     // eslint-disable-next-line new-cap
@@ -333,7 +334,7 @@ async function decrypt (
     const sender = await Address.fromAddress(transfer.address);
 
     const aesKey = Buffer.from(
-        await TurtleCoinCrypto.generateKeyDerivation(
+        await WrkzCoinCrypto.generateKeyDerivation(
             sender.spend.publicKey, destination.spend.privateKey), 'hex');
 
     // eslint-disable-next-line new-cap
@@ -358,7 +359,7 @@ async function calculateSpendKeySignatures (
             throw new Error('The supplied spend keys are not paired correctly');
         }
 
-        const sig = await TurtleCoinCrypto.generateSignature(keys.publicKey, keys.publicKey, keys.privateKey);
+        const sig = await WrkzCoinCrypto.generateSignature(keys.publicKey, keys.publicKey, keys.privateKey);
 
         signatures.push({ key: keys.publicKey, signature: sig });
     }
@@ -369,8 +370,9 @@ async function calculateSpendKeySignatures (
 /** @ignore */
 async function verifySpendKeySignatures (spendKeys: MultisigInterfaces.PublicSpendKey[]): Promise<void> {
     for (const spendKey of spendKeys) {
-        if (!await TurtleCoinCrypto.checkSignature(spendKey.key, spendKey.key, spendKey.signature)) {
+        if (!await WrkzCoinCrypto.checkSignature(spendKey.key, spendKey.key, spendKey.signature)) {
             throw new Error('Invalid public spend key signature for: ' + spendKey.key);
         }
     }
 }
+

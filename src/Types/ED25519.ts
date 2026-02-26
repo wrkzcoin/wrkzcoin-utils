@@ -1,9 +1,10 @@
 // Copyright (c) 2018-2020, The TurtleCoin Developers
+// Copyright (c) 2026, The WrkzCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
 import { Config } from '../Config';
-import { TurtleCoinCrypto } from '../Types';
+import { WrkzCoinCrypto } from '../Types';
 import { randomBytes } from 'crypto';
 
 export namespace ED25519 {
@@ -39,11 +40,11 @@ export namespace ED25519 {
             /* If no entropy was supplied, we'll go find our own */
             entropy = entropy || rand(256);
 
-            if (publicKey && await TurtleCoinCrypto.checkKey(publicKey)) {
+            if (publicKey && await WrkzCoinCrypto.checkKey(publicKey)) {
                 pair.m_publicKey = publicKey;
             }
 
-            if (privateKey && await TurtleCoinCrypto.checkScalar(privateKey)) {
+            if (privateKey && await WrkzCoinCrypto.checkScalar(privateKey)) {
                 pair.m_privateKey = privateKey;
             }
 
@@ -58,13 +59,13 @@ export namespace ED25519 {
                     we are probably looking to generate the deterministic view key for the
                     specified private spend key */
                 if (iterations && iterations === 1) {
-                    const temp = await TurtleCoinCrypto.cn_fast_hash(
+                    const temp = await WrkzCoinCrypto.cn_fast_hash(
                         pair.m_privateKey);
 
                     await pair.setPrivateKey(temp);
                 }
 
-                pair.m_publicKey = await TurtleCoinCrypto.secretKeyToPublicKey(pair.m_privateKey);
+                pair.m_publicKey = await WrkzCoinCrypto.secretKeyToPublicKey(pair.m_privateKey);
             }
 
             return pair;
@@ -83,8 +84,8 @@ export namespace ED25519 {
          */
         public async setPrivateKey (key: string): Promise<void> {
             try {
-                this.m_privateKey = (await TurtleCoinCrypto.checkScalar(key))
-                    ? key : await TurtleCoinCrypto.scReduce32(key);
+                this.m_privateKey = (await WrkzCoinCrypto.checkScalar(key))
+                    ? key : await WrkzCoinCrypto.scReduce32(key);
             } catch (e) {
                 this.m_publicKey = key;
             }
@@ -106,7 +107,7 @@ export namespace ED25519 {
 
             // Try to verify that it is a public key via the library
             try {
-                isPubKey = await TurtleCoinCrypto.checkKey(key);
+                isPubKey = await WrkzCoinCrypto.checkKey(key);
             } catch (e) {
                 // If the library could not process this, then set the key anyway
                 this.m_publicKey = key;
@@ -129,12 +130,12 @@ export namespace ED25519 {
                 return false;
             }
 
-            return (await TurtleCoinCrypto.secretKeyToPublicKey(this.privateKey) === this.publicKey);
+            return (await WrkzCoinCrypto.secretKeyToPublicKey(this.privateKey) === this.publicKey);
         }
     }
 
     /**
-     * Represents a set of ED25519 key pairs (view and spend) used by TurtleCoin wallets
+     * Represents a set of ED25519 key pairs (view and spend) used by WrkzCoin wallets
      */
     export class Keys {
         protected m_spendKeys: KeyPair = new KeyPair();
@@ -208,7 +209,8 @@ async function simpleKdf (value: string, iterations: number): Promise<string> {
     /** This is a very simple implementation of a pseudo PBKDF2 function */
     let hex = Buffer.from(value).toString('hex');
     for (let i = 0; i < iterations; i++) {
-        hex = await TurtleCoinCrypto.cn_fast_hash(hex);
+        hex = await WrkzCoinCrypto.cn_fast_hash(hex);
     }
     return hex;
 }
+

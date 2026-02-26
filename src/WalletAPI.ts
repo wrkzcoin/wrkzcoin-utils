@@ -1,4 +1,5 @@
 // Copyright (c) 2018-2020, Brandon Lehmann, The TurtleCoin Developers
+// Copyright (c) 2026, The WrkzCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -862,3 +863,4 @@ function isHex (str: string): boolean {
     const regex = new RegExp('^[0-9a-fA-F]+$');
     return regex.test(str);
 }
+

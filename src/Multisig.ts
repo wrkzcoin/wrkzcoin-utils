@@ -1,10 +1,11 @@
 // Copyright (c) 2020, The TurtleCoin Developers
+// Copyright (c) 2026, The WrkzCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
 import { Address } from './Address';
 import { ED25519 } from './Types/ED25519';
-import { Interfaces, MultisigInterfaces, TransactionInputs, TurtleCoinCrypto } from './Types';
+import { Interfaces, MultisigInterfaces, TransactionInputs, WrkzCoinCrypto } from './Types';
 import { Transaction } from './Transaction';
 /** @ignore */
 import KeyPair = ED25519.KeyPair;
@@ -53,7 +54,7 @@ export class Multisig {
             throw new Error('Not all participants have been loaded');
         }
 
-        return TurtleCoinCrypto.calculateSharedPrivateKey(this.m_view_keys);
+        return WrkzCoinCrypto.calculateSharedPrivateKey(this.m_view_keys);
     }
 
     /**
@@ -72,7 +73,7 @@ export class Multisig {
             }
         }
 
-        return TurtleCoinCrypto.calculateSharedPublicKey(keys);
+        return WrkzCoinCrypto.calculateSharedPublicKey(keys);
     }
 
     /**
@@ -129,7 +130,7 @@ export class Multisig {
 
             for (const multisig_key of this.m_wallet_multisig_keys) {
                 const keys =
-                    await TurtleCoinCrypto.calculateMultisigPrivateKeys(
+                    await WrkzCoinCrypto.calculateMultisigPrivateKeys(
                         multisig_key.privateKey, this.m_participant_keys);
 
                 for (const key of keys) {
@@ -226,7 +227,7 @@ export class Multisig {
         const result = new Multisig();
 
         for (const key of multisig_private_keys) {
-            if (!await TurtleCoinCrypto.checkScalar(key)) {
+            if (!await WrkzCoinCrypto.checkScalar(key)) {
                 throw new Error('Found an invalid private key in the list of multisig private keys');
             }
 
@@ -235,7 +236,7 @@ export class Multisig {
             result.m_wallet_multisig_keys.push(await KeyPair.from(undefined, key));
         }
 
-        if (!await TurtleCoinCrypto.checkScalar(sharedPrivateViewKey)) {
+        if (!await WrkzCoinCrypto.checkScalar(sharedPrivateViewKey)) {
             throw new Error('Private view key is not a valid private key');
         }
 
@@ -282,7 +283,7 @@ export class Multisig {
         outputIndex: number,
         partialKeyImages: string[]
     ): Promise<string> {
-        return TurtleCoinCrypto.restoreKeyImage(publicEphemeral, derivation, outputIndex, partialKeyImages);
+        return WrkzCoinCrypto.restoreKeyImage(publicEphemeral, derivation, outputIndex, partialKeyImages);
     }
 
     private m_wallet_multisig_keys: KeyPair[] = [];
@@ -304,7 +305,7 @@ export class Multisig {
         publicSpendKeys: string[] | string,
         privateViewKey?: string
     ): Promise<void> {
-        if (privateViewKey && !await TurtleCoinCrypto.checkScalar(privateViewKey)) {
+        if (privateViewKey && !await WrkzCoinCrypto.checkScalar(privateViewKey)) {
             throw new Error('Private view key is not a valid private key');
         }
 
@@ -317,7 +318,7 @@ export class Multisig {
         }
 
         for (const key of publicSpendKeys) {
-            if (!await TurtleCoinCrypto.checkKey(key)) {
+            if (!await WrkzCoinCrypto.checkKey(key)) {
                 throw new Error('Found an invalid public spend key in the list');
             }
         }
@@ -350,7 +351,7 @@ export class Multisig {
         const promises = [];
 
         for (const multisigKey of this.m_multisig_keys) {
-            promises.push(TurtleCoinCrypto.generateKeyImage(publicEphemeral, multisigKey.privateKey));
+            promises.push(WrkzCoinCrypto.generateKeyImage(publicEphemeral, multisigKey.privateKey));
         }
 
         const results = await Promise.all(promises);
@@ -490,7 +491,7 @@ async function generatePartialSigningKey (
     index: number,
     privateSpendKey: string
 ): Promise<{ key: string, index: number }> {
-    const key = await TurtleCoinCrypto.generatePartialSigningKey(preparedSignature, privateSpendKey);
+    const key = await WrkzCoinCrypto.generatePartialSigningKey(preparedSignature, privateSpendKey);
 
     return {
         key,
@@ -561,7 +562,7 @@ async function restoreRingSignatures (
         keys.push(partialSigningKey.partialSigningKey);
     }
 
-    const sigs = await TurtleCoinCrypto.restoreRingSignatures(
+    const sigs = await WrkzCoinCrypto.restoreRingSignatures(
         derivation,
         outputIndex,
         keys,
@@ -596,5 +597,6 @@ async function checkRingSignatures (
     publicKeys: string[],
     signatures: string[]
 ): Promise<boolean> {
-    return TurtleCoinCrypto.checkRingSignatures(hash, keyImage, publicKeys, signatures);
+    return WrkzCoinCrypto.checkRingSignatures(hash, keyImage, publicKeys, signatures);
 }
+

@@ -1,4 +1,5 @@
 // Copyright (c) 2018-2020, The TurtleCoin Developers
+// Copyright (c) 2026, The WrkzCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -22,8 +23,8 @@ export { MultisigMessage } from './MultisigMessage';
 export { ParentBlock } from './ParentBlock';
 export { Transaction } from './Transaction';
 export { ICoinConfig } from './Config';
-export { LegacyTurtleCoind } from './LegacyTurtleCoind';
-export { TurtleCoind } from './TurtleCoind';
+export { LegacyWrkz } from './LegacyWrkz';
+export { Wrkz } from './Wrkz';
 export { WalletAPI } from './WalletAPI';
 
 /** @ignore */
@@ -47,7 +48,7 @@ import LedgerErrorCode = Types.LedgerTypes.ErrorCode;
 
 import ICryptoNote = Types.CryptoNoteInterfaces.ICryptoNote;
 
-import TurtleCoindTypes = Types.TurtleCoindTypes;
+import WrkzTypes = Types.WrkzTypes;
 
 import WalletAPITypes = Types.WalletAPITypes;
 
@@ -63,7 +64,7 @@ export {
     LedgerError,
     LedgerTransactionState,
     LedgerErrorCode,
-    TurtleCoindTypes,
+    WrkzTypes,
     WalletAPITypes
 };
 
@@ -84,3 +85,4 @@ export function on (event: string, callback: () => void) {
         check();
     }
 }
+

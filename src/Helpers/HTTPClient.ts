@@ -1,4 +1,5 @@
 // Copyright (c) 2018-2020, Brandon Lehmann, The TurtleCoin Developers
+// Copyright (c) 2026, The WrkzCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -253,3 +254,4 @@ export class HTTPClient {
         return format('%s://%s:%s/%s', this.protocol, this.host, this.port, endpoint);
     }
 }
+
