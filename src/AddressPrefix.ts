@@ -1,4 +1,5 @@
 // Copyright (c) 2018-2020, The TurtleCoin Developers
+// Copyright (c) 2026, The WrkzCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -13,7 +14,7 @@ export enum SIZES {
 }
 
 /**
- * Represents a TurtleCoin address prefix
+ * Represents a WrkzCoin address prefix
  */
 export class AddressPrefix {
     /**
@@ -110,3 +111,4 @@ export class AddressPrefix {
         }
     }
 }
+

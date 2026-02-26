@@ -1,4 +1,5 @@
 // Copyright (c) 2020, The TurtleCoin Developers
+// Copyright (c) 2026, The WrkzCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -26,7 +27,7 @@ export namespace LedgerTypes {
     }
 
     /**
-     * Represents the APDU command types available in the TurtleCoin application
+     * Represents the APDU command types available in the WrkzCoin application
      * for ledger hardware wallets
      */
     export enum Command {
@@ -283,3 +284,4 @@ export namespace LedgerTypes {
         }
     }
 }
+

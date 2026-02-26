@@ -1,4 +1,5 @@
 // Copyright (c) 2019-2020, The TurtleCoin Developers
+// Copyright (c) 2026, The WrkzCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -289,3 +290,4 @@ function entriesToBuffer (entries: PortableStorageEntry[]): Buffer {
 
     return writer.buffer;
 }
+

@@ -1,14 +1,15 @@
 // Copyright (c) 2018-2020, The TurtleCoin Developers
+// Copyright (c) 2026, The WrkzCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
 import { Crypto } from 'wrkzcoin-crypto';
-import * as BigInteger from 'big-integer';
+import BigInteger from 'big-integer';
 
 /** @ignore */
-const TurtleCoinCrypto = new Crypto();
+const WrkzCoinCrypto = new Crypto();
 
-export { TurtleCoinCrypto };
+export { WrkzCoinCrypto };
 
 /** @ignore */
 export enum PortableStorageConstants {
@@ -39,10 +40,11 @@ export * from './Types/Ledger';
 
 export * from './Types/WalletAPI';
 
-export * from './Types/LegacyTurtleCoind';
+export * from './Types/LegacyWrkz';
 
-export * from './Types/TurtleCoind';
+export * from './Types/Wrkz';
 
 export { PortableStorage, StorageType } from './Types/PortableStorage';
 
 export { BigInteger };
+

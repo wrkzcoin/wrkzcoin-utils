@@ -1,5 +1,5 @@
 {
-    "name": "TurtleCoin-Utils",
+    "name": "WrkzCoin-Utils",
     "out": "./docs",
     "excludeExternals": true,
     "excludeNotExported": true,

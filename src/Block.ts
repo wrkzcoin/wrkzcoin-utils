@@ -1,11 +1,12 @@
 // Copyright (c) 2018-2020, The TurtleCoin Developers
+// Copyright (c) 2026, The WrkzCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
 import { Config, ICoinConfig, ICoinRunningConfig } from './Config';
 import { Transaction } from './Transaction';
 import { ParentBlock } from './ParentBlock';
-import { TransactionInputs, TransactionOutputs, TurtleCoinCrypto } from './Types';
+import { TransactionInputs, TransactionOutputs, WrkzCoinCrypto } from './Types';
 import { Reader, Writer } from 'bytestream-helper';
 import { Common } from './Common';
 
@@ -18,7 +19,7 @@ interface Cache {
 }
 
 /**
- * Represents a TurtleCoin Block
+ * Represents a WrkzCoin Block
  */
 export class Block {
     /**
@@ -73,7 +74,7 @@ export class Block {
     public async baseTransactionBranch (): Promise<string[]> {
         const transactions = [await this.m_minerTransaction.hash()].concat(this.transactions);
 
-        return TurtleCoinCrypto.tree_branch(transactions);
+        return WrkzCoinCrypto.tree_branch(transactions);
     }
 
     /**
@@ -82,7 +83,7 @@ export class Block {
     public async transactionTreeHash (): Promise<{ hash: string, count: number }> {
         const transactions = [await this.m_minerTransaction.hash()].concat(this.transactions);
 
-        const treeHash = await TurtleCoinCrypto.tree_hash(transactions);
+        const treeHash = await WrkzCoinCrypto.tree_hash(transactions);
 
         return { hash: treeHash, count: transactions.length };
     }
@@ -262,7 +263,7 @@ export class Block {
         if (block.m_majorVersion >= block.m_config.activateParentBlockVersion) {
             block.m_parentBlock.transactionCount = reader.varint().toJSNumber();
 
-            const baseTransactionBranchDepth = await TurtleCoinCrypto.tree_depth(block.m_parentBlock.transactionCount);
+            const baseTransactionBranchDepth = await WrkzCoinCrypto.tree_depth(block.m_parentBlock.transactionCount);
 
             for (let i = 0; i < baseTransactionBranchDepth; i++) {
                 block.m_parentBlock.baseTransactionBranch.push(reader.hash());
@@ -482,7 +483,7 @@ export class Block {
             writer.hash(this.m_parentBlock.previousBlockHash);
             writer.uint32_t(this.m_nonce, true);
 
-            const treeHash = await TurtleCoinCrypto.tree_hash_from_branch(
+            const treeHash = await WrkzCoinCrypto.tree_hash_from_branch(
                 this.m_parentBlock.baseTransactionBranch,
                 await this.m_parentBlock.minerTransaction.hash(),
                 0
@@ -532,7 +533,7 @@ async function getBlockHash (data: Buffer): Promise<string> {
     writer.varint(data.length);
     writer.write(data);
 
-    return TurtleCoinCrypto.cn_fast_hash(writer.blob);
+    return WrkzCoinCrypto.cn_fast_hash(writer.blob);
 }
 
 /** @ignore */
@@ -543,16 +544,17 @@ async function getBlockPoWHash (data: Buffer, majorVersion: number): Promise<str
         case 1:
         case 2:
         case 3:
-            return TurtleCoinCrypto.cn_slow_hash_v0(blob);
+            return WrkzCoinCrypto.cn_slow_hash_v0(blob);
         case 4:
-            return TurtleCoinCrypto.cn_lite_slow_hash_v1(blob);
+            return WrkzCoinCrypto.cn_lite_slow_hash_v1(blob);
         case 5:
-            return TurtleCoinCrypto.cn_turtle_lite_slow_hash_v2(blob);
+            return WrkzCoinCrypto.cn_turtle_lite_slow_hash_v2(blob);
         case 6:
-            return TurtleCoinCrypto.chukwa_slow_hash_v1(blob);
+            return WrkzCoinCrypto.chukwa_slow_hash_v1(blob);
         case 7:
-            return TurtleCoinCrypto.chukwa_slow_hash_v2(blob);
+            return WrkzCoinCrypto.chukwa_slow_hash_v2(blob);
         default:
             throw new Error('Unhandled major block version');
     }
 }
+

@@ -1,4 +1,5 @@
 // Copyright (c) 2018-2020, The TurtleCoin Developers
+// Copyright (c) 2026, The WrkzCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -6,7 +7,7 @@ import { AddressPrefix } from './AddressPrefix';
 import { Base58 } from 'turtlecoin-base58';
 import { Common } from './Common';
 import { Config } from './Config';
-import { ED25519, TurtleCoinCrypto } from './Types';
+import { ED25519, WrkzCoinCrypto } from './Types';
 import { Mnemonics } from 'turtlecoin-mnemonics';
 import { Reader, Writer } from 'bytestream-helper';
 
@@ -23,7 +24,7 @@ export enum SIZES {
 }
 
 /**
- * Represents a TurtleCoin address
+ * Represents a WrkzCoin address
  */
 export class Address {
     /**
@@ -136,7 +137,7 @@ export class Address {
         const expectedChecksum = reader.bytes(SIZES.CHECKSUM).toString('hex');
 
         const checksum = (new Reader(
-            await TurtleCoinCrypto.cn_fast_hash(decodedPrefix + paymentId + publicSpend + publicView)
+            await WrkzCoinCrypto.cn_fast_hash(decodedPrefix + paymentId + publicSpend + publicView)
         )).bytes(SIZES.CHECKSUM).toString('hex');
 
         if (expectedChecksum !== checksum) {
@@ -293,7 +294,7 @@ export class Address {
         }
 
         if (!Common.isHex64(seed)) {
-            seed = await TurtleCoinCrypto.cn_fast_hash(seed);
+            seed = await WrkzCoinCrypto.cn_fast_hash(seed);
         }
 
         const address = new Address();
@@ -360,7 +361,7 @@ export class Address {
             prefix = new AddressPrefix(prefix);
         }
 
-        if (!await TurtleCoinCrypto.checkScalar(privateSpendKey)) {
+        if (!await WrkzCoinCrypto.checkScalar(privateSpendKey)) {
             throw new Error('Invalid private spend key supplied');
         }
 
@@ -380,7 +381,7 @@ export class Address {
 
         const view = await ED25519.KeyPair.from(undefined, privateSpendKey, undefined, 1);
 
-        const spend = await TurtleCoinCrypto.generateDeterministicSubwalletKeys(privateSpendKey, subwalletIndex);
+        const spend = await WrkzCoinCrypto.generateDeterministicSubwalletKeys(privateSpendKey, subwalletIndex);
 
         address.m_keys = await ED25519.Keys.from(
             await ED25519.KeyPair.from(spend.public_key, spend.private_key), view);
@@ -426,7 +427,7 @@ export class Address {
             return Base58.encode(this.m_cached.address);
         }
 
-        const checksum = (await TurtleCoinCrypto.cn_fast_hash(writer.blob))
+        const checksum = (await WrkzCoinCrypto.cn_fast_hash(writer.blob))
             .slice(0, 8);
 
         this.m_cached.addressPrefix = writer.blob;
@@ -438,3 +439,4 @@ export class Address {
         return Base58.encode(writer.blob);
     }
 }
+
