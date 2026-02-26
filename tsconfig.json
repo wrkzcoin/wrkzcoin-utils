@@ -7,6 +7,12 @@
       "scripthost"
     ],
     "module": "commonjs",
+    "baseUrl": ".",
+    "paths": {
+      "wrkzcoin-crypto": [
+        "src/wrkzcoin-crypto.d.ts"
+      ]
+    },
     "esModuleInterop": true,
     "declaration": true,
     "outDir": "./dist",
