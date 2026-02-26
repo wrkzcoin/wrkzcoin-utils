@@ -18,7 +18,7 @@ import {
     ICryptoConfig
 } from './Types';
 import { Transaction } from './Transaction';
-import * as Numeral from 'numeral';
+import Numeral from 'numeral';
 import ICryptoNote = CryptoNoteInterfaces.ICryptoNote;
 
 /** @ignore */

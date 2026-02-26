@@ -4,7 +4,7 @@
 // Please see the included LICENSE file for more information.
 
 import { Crypto } from 'wrkzcoin-crypto';
-import * as BigInteger from 'big-integer';
+import BigInteger from 'big-integer';
 
 /** @ignore */
 const WrkzCoinCrypto = new Crypto();

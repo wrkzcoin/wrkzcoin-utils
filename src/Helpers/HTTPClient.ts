@@ -126,7 +126,7 @@ export class HTTPClient {
             agent: this.agent,
             method: 'delete',
             signal: controller.signal
-        });
+        } as any);
 
         clearTimeout(timeout);
 
@@ -151,7 +151,7 @@ export class HTTPClient {
             agent: this.agent,
             method: 'get',
             signal: controller.signal
-        });
+        } as any);
 
         clearTimeout(timeout);
 
@@ -179,7 +179,7 @@ export class HTTPClient {
             method: 'post',
             body: JSON.stringify(body || {}),
             signal: controller.signal
-        });
+        } as any);
 
         clearTimeout(timeout);
 
@@ -211,7 +211,7 @@ export class HTTPClient {
             method: 'put',
             body: JSON.stringify(body || {}),
             signal: controller.signal
-        });
+        } as any);
 
         clearTimeout(timeout);
 

@@ -3,7 +3,7 @@
 //
 // Please see the included LICENSE file for more information.
 
-import * as BigInteger from 'big-integer';
+import BigInteger from 'big-integer';
 import { HTTPClient } from './Helpers/HTTPClient';
 import { WrkzTypes } from './Types/Wrkz';
 

@@ -6,7 +6,7 @@
 import { HTTPClient } from './Helpers/HTTPClient';
 import { LegacyWrkzTypes } from './Types/LegacyWrkz';
 import { WrkzTypes } from './Types/Wrkz';
-import * as BigInteger from 'big-integer';
+import BigInteger from 'big-integer';
 import { Block } from './Block';
 import { Transaction } from './Transaction';
 import { TransactionOutputs } from './Types/ITransactionOutput';

@@ -20,7 +20,7 @@ import {
 import { Common } from './Common';
 import { AddressPrefix } from './AddressPrefix';
 import { Address } from './Address';
-import * as Numeral from 'numeral';
+import Numeral from 'numeral';
 import { Transaction } from './Transaction';
 
 /** @ignore */
