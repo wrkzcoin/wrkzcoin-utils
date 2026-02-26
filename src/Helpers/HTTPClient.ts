@@ -5,7 +5,7 @@
 
 import * as http from 'http';
 import * as https from 'https';
-import fetch, { Headers } from 'node-fetch';
+import fetch from 'node-fetch';
 import { format } from 'util';
 import { AbortController } from 'abort-controller/dist/abort-controller';
 
@@ -102,17 +102,15 @@ export class HTTPClient {
         return this.m_timeout;
     }
 
-    protected get headers (): Headers {
-        const headers = new Headers();
-
-        headers.set('Accept', 'application/json');
-
-        headers.set('Content-type', 'application/json');
-
-        headers.set('User-Agent', this.userAgent);
+    protected get headers (): Record<string, string> {
+        const headers: Record<string, string> = {
+            Accept: 'application/json',
+            'Content-type': 'application/json',
+            'User-Agent': this.userAgent
+        };
 
         if (this.key) {
-            headers.set('X-API-KEY', this.key);
+            headers['X-API-KEY'] = this.key;
         }
 
         return headers;

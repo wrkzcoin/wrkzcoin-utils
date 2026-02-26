@@ -4,11 +4,11 @@
 // Please see the included LICENSE file for more information.
 
 import { AddressPrefix } from './AddressPrefix';
-import { Base58 } from 'WrkzCoin-base58';
+import { Base58 } from 'turtlecoin-base58';
 import { Common } from './Common';
 import { Config } from './Config';
 import { ED25519, WrkzCoinCrypto } from './Types';
-import { Mnemonics } from 'WrkzCoin-mnemonics';
+import { Mnemonics } from 'turtlecoin-mnemonics';
 import { Reader, Writer } from 'bytestream-helper';
 
 /** @ignore */

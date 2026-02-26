@@ -7,10 +7,12 @@
       "scripthost"
     ],
     "module": "commonjs",
+    "esModuleInterop": true,
     "declaration": true,
     "outDir": "./dist",
     "strict": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "skipLibCheck": true
   },
   "include": ["src/**/*"]
 }
